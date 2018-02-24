@@ -1,0 +1,144 @@
+{
+    "template": "sdata*",
+    "settings": {
+        "index.mapping.ignore_malformed": true,
+        "number_of_shards": 6,
+        "number_of_replicas": 1,
+        "similarity": {
+            "default": {
+                "type": "DictBM25"
+            }
+        },
+        "analysis": {
+            "filter": {
+                "my_synonym": {
+                    "synonyms_path": "/ceph/synonym.txt",
+                    "type": "hot_synonym"
+                },
+                "my_aboost_filter": {
+                    "type": "aboost_filter"
+                }
+            },
+            "analyzer": {
+                "ik_ssyno": {
+                    "filter": [
+                        "my_synonym",
+                        "my_aboost_filter"
+                    ],
+                    "tokenizer": "ik_smart"
+                },
+                "ik_syno": {
+                    "filter": [
+                        "my_synonym",
+                        "my_aboost_filter"
+                    ],
+                    "tokenizer": "ik_max_word"
+                },
+                "ik_ssyno2": {
+                    "filter": [
+                        "my_synonym"
+                    ],
+                    "tokenizer": "ik_smart"
+                },
+                "ik_syno2": {
+                    "filter": [
+                        "my_synonym"
+                    ],
+                    "tokenizer": "ik_max_word"
+                }
+            }
+        }
+    },
+    "mappings": {
+        "common": {
+            "_all": {
+                "enabled": false
+            },
+            "properties": {
+                "c1": {
+                    "type": "keyword"
+                },
+                "c2": {
+                    "type": "keyword"
+                },
+                "cp": {
+                    "type": "keyword",
+                    "null_value": "unknown"
+                },
+                "app_tag": {
+                    "type": "keyword",
+                    "null_value": "unknown"
+                },
+                "topic_tag": {
+                    "type": "keyword",
+                    "null_value": "qita"
+                },
+                "date": {
+                    "format": "yyyy-MM-dd HH:mm:ss",
+                    "type": "date"
+                },
+                "title": {
+                    "analyzer": "ik_max_word",
+                    "include_in_all": "true",
+                    "index_options": "offsets",
+                    "type": "text",
+                    "term_vector" : "with_positions_offsets"
+                },
+                "content": {
+                    "analyzer": "ik_max_word",
+                    "include_in_all": "true",
+                    "index_options": "offsets",
+                    "type": "text"
+                },
+                "desc": {
+                    "analyzer": "ik_max_word",
+                    "include_in_all": "true",
+                    "index_options": "offsets",
+                    "type": "text"
+                },
+                "tag": {
+                    "analyzer": "ik_max_word",
+                    "include_in_all": "true",
+                    "index_options": "offsets",
+                    "type": "text"
+                },
+                "graph_tag": {
+                    "analyzer": "ik_max_word",
+                    "include_in_all": "true",
+                    "index_options": "offsets",
+                    "type": "text"
+                },
+                "read_num": {
+                    "type": "long"
+                },
+                "comment_count": {
+                    "type": "long"
+                },
+                "like_num": {
+                    "type": "long"
+                },
+                "score": {
+                    "type": "float"
+                },
+                "app_tag_weight": {
+                    "type": "float"
+                },
+                "similar_app_tag": {
+                    "type": "keyword"
+                },
+                "app_cate_v1_tag": {
+                    "type": "keyword"
+                },
+                "app_cate_v2_tag": {
+                    "type": "keyword"
+                },
+                "app_cate_v3_tag": {
+                    "type": "keyword"
+                },
+                "app_cate_open_tag": {
+                    "type": "keyword"
+                }
+            }
+        }
+    }
+}
